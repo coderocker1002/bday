@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Cake 🎂</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(120deg, #ffb3e6, #d4a5ff, #fbc2ff, #b39dff);
+      background-size: 350% 350%;
+      animation: bgMove 18s ease-in-out infinite;
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: #ffffff;
+    }
+
+    @keyframes bgMove {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Glass card */
+    .card {
+      position: relative;
+      width: min(520px, 92vw);
+      padding: 2.4rem 2.6rem 2.1rem;
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      z-index: 2;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      background: rgba(255, 255, 255, 0.3);
+      margin-bottom: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+    }
+
+    h1 {
+      font-size: 2.3rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+      animation: titlePop 1.2s ease-out forwards;
+      transform-origin: center;
+      opacity: 0;
+    }
+
+    @keyframes titlePop {
+      0% {
+        transform: scale(0.6) translateY(20px);
+        opacity: 0;
+      }
+      60% {
+        transform: scale(1.04) translateY(-4px);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      margin-bottom: 1.4rem;
+      opacity: 0.95;
+      animation: fadeUp 1.2s ease-out 0.25s forwards;
+      transform: translateY(10px);
+      opacity: 0;
+    }
+
+    .accent {
+      font-weight: 600;
+    }
+
+    @keyframes fadeUp {
+      from {
+        transform: translateY(10px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .cake-container {
+      position: relative;
+      margin: 1.4rem auto 0;
+      width: 260px;
+      height: 260px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      animation: fadeUp 1.2s ease-out 0.45s forwards;
+      transform: translateY(10px);
+      opacity: 0;
+    }
+
+    .cake {
+      position: relative;
+      width: 230px;
+      height: 220px;
+      margin: 0 auto;
+      transition: all 0.5s ease;
+    }
+
+    .cake-layer {
+      width: 230px;
+      background: linear-gradient(180deg, #ff6b9d 0%, #ff8fab 100%);
+      border-radius: 10px;
+      position: absolute;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.18);
+      animation: wiggle 2.2s ease-in-out infinite;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-0.8deg); }
+      75% { transform: rotate(0.8deg); }
+    }
+
+    .layer1 {
+      height: 85px;
+      bottom: 0;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+
+    .layer2 {
+      height: 70px;
+      bottom: 78px;
+      width: 200px;
+      left: 15px;
+      background: linear-gradient(180deg, #ffd93d 0%, #ffe66d 100%);
+    }
+
+    .layer3 {
+      height: 60px;
+      bottom: 140px;
+      width: 180px;
+      left: 25px;
+      background: linear-gradient(180deg, #6bcf7f 0%, #8ee99f 100%);
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .frosting {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      background: #fff;
+      border-radius: 50%;
+      animation: float 3s ease-in-out infinite;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    .f1 { top: 8px; left: 18px; animation-delay: 0s; }
+    .f2 { top: 8px; left: 82px; animation-delay: 0.5s; }
+    .f3 { top: 8px; right: 18px; animation-delay: 1s; }
+    .f4 { top: 70px; left: 22px; animation-delay: 0.3s; }
+    .f5 { top: 70px; right: 24px; animation-delay: 0.7s; }
+
+    .candle {
+      position: absolute;
+      width: 8px;
+      height: 40px;
+      background: linear-gradient(180deg, #fff 0%, #f0f0f0 100%);
+      border-radius: 4px;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: all 0.3s ease;
+    }
+
+    .flame {
+      position: absolute;
+      width: 16px;
+      height: 20px;
+      background: radial-gradient(circle, #ffeb3b 0%, #ff9800 70%, #ff5722 100%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: flicker 0.3s ease-in-out infinite;
+      box-shadow: 0 0 12px rgba(255, 223, 100, 0.9);
+    }
+
+    @keyframes flicker {
+      0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+      50% { transform: translateX(-50%) scale(1.1, 0.9); opacity: 0.8; }
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1.9rem;
+      animation: fadeUp 1.2s ease-out 0.7s forwards;
+      transform: translateY(10px);
+      opacity: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1.6rem;
+      font-size: 0.98rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.96);
+      color: #c153ff;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.18s ease;
+    }
+
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.85);
+      color: #ff7edb;
+    }
+
+    .btn span.icon {
+      font-size: 1.15rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
+      background: #ffffff;
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.97);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    .message {
+      color: white;
+      font-size: 0.95rem;
+      margin-top: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 1.2s ease-out 0.95s forwards;
+      transform: translateY(10px);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .celebration-text {
+      font-size: 1.25rem;
+      color: #ffd93d;
+      margin-top: 1.1rem;
+      opacity: 0;
+      text-shadow: 0 0 10px rgba(0,0,0,0.45);
+    }
+
+    .celebration-text.show {
+      animation: popIn 0.5s ease forwards;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .footer-note {
+      font-size: 0.82rem;
+      opacity: 0.8;
+      margin-top: 0.7rem;
+    }
+
+    /* Cutting animation */
+    .cake.cutting .cake-layer {
+      animation: split 1s ease forwards;
+    }
+
+    @keyframes split {
+      0% { transform: translateX(0) rotate(0deg); opacity: 1; }
+      100% {
+        transform: translateX(var(--split-x, -100px)) rotate(var(--split-rotate, -15deg));
+        opacity: 0;
+      }
+    }
+
+    .cake.cutting .layer1 { --split-x: -120px; --split-rotate: -18deg; }
+    .cake.cutting .layer2 { --split-x: 120px; --split-rotate: 18deg; }
+    .cake.cutting .layer3 { --split-x: -90px;  --split-rotate: -22deg; }
+
+    /* Balloons (background, softened) */
+    .balloon {
+      position: absolute;
+      width: 60px;
+      height: 80px;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: float-balloon 6s ease-in-out infinite;
+      opacity: 0.7;
+      filter: blur(0.2px);
+      z-index: 1;
+    }
+
+    @keyframes float-balloon {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50% { transform: translateY(-30px) rotate(5deg); }
+    }
+
+    .balloon::before {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 100px;
+      background: rgba(255,255,255,0.6);
+      bottom: -100px;
+      left: 50%;
+    }
+
+    .balloon::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 15px;
+      background: inherit;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+    }
+
+    .b1 { background: #ff6b9d; top: 12%; left: 8%;  animation-delay: 0s; }
+    .b2 { background: #ffd93d; top: 38%; left: 4%;  animation-delay: 0.8s; }
+    .b3 { background: #6bcf7f; top: 65%; left: 12%; animation-delay: 1.6s; }
+    .b4 { background: #4facfe; top: 18%; right: 10%; animation-delay: 0.4s; }
+    .b5 { background: #f093fb; top: 45%; right: 4%;  animation-delay: 1.2s; }
+    .b6 { background: #43e97b; top: 70%; right: 13%; animation-delay: 2s; }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      animation: confetti-fall 3s linear forwards;
+      opacity: 0;
+      z-index: 5;
+      border-radius: 2px;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Sparkles on the cake */
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: sparkle 1s ease-in-out infinite;
+      box-shadow: 0 0 10px white;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Back link */
+    .back-link {
+      position: fixed;
+      left: 1.5rem;
+      top: 1.3rem;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.26);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      cursor: pointer;
+      text-decoration: none;
+      color: #ffffff;
+      z-index: 6;
+    }
+
+    .back-link span.icon {
+      font-size: 1rem;
+    }
+
+    .back-link:hover {
+      background: rgba(255, 255, 255, 0.36);
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.9rem;
+        letter-spacing: 0.06em;
+      }
+      .card {
+        padding: 2rem 1.5rem 1.7rem;
+      }
+      .cake-container {
+        width: 220px;
+        height: 220px;
+      }
+      .cake {
+        width: 200px;
+        height: 190px;
+      }
+      .cake-layer {
+        width: 200px;
+      }
+      .layer2 {
+        width: 180px;
+        left: 10px;
+      }
+      .layer3 {
+        width: 160px;
+        left: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- optional back to main card -->
+  <a href="index.html" class="back-link">
+    <span class="icon">←</span>
+    Back to birthday card
+  </a>
+
+  <div class="card">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Time For Cake
+    </div>
+
+    <h1>Virtual Cake Cutting 🎂</h1>
+
+    <div class="subtitle">
+      You said you haven’t cut a cake in ages, so...<br>
+      <span class="accent">this one’s just for you.</span>
+    </div>
+
+    <div class="cake-container">
+      <div class="cake" id="cake">
+        <div class="cake-layer layer3">
+          <div class="frosting f1"></div>
+          <div class="frosting f2"></div>
+          <div class="frosting f3"></div>
+          <div class="candle">
+            <div class="flame"></div>
+          </div>
+        </div>
+        <div class="cake-layer layer2">
+          <div class="frosting f4"></div>
+          <div class="frosting f5"></div>
+        </div>
+        <div class="cake-layer layer1"></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="cutBtn">
+        <span class="icon">🔪</span>
+        Cut the cake!
+      </button>
+      <button class="btn secondary" id="sparkleBtn">
+        <span class="icon">✨</span>
+        More sparkles
+      </button>
+    </div>
+
+    <div class="celebration-text" id="celebrationText"></div>
+
+    <p class="message">
+      Wishing you an amazing day filled with joy, chaos-level laughter,<br>
+      and soft little moments you’ll want to replay later. 🎈
+      <br><span class="accent">Thanks for existing, cake buddy.</span>
+    </p>
+
+    <div class="footer-note">
+      (You can cut it as many times as you like. Unlimited slices are kind of the point.)
+    </div>
+  </div>
+
+  <!-- Balloons -->
+  <div class="balloon b1"></div>
+  <div class="balloon b2"></div>
+  <div class="balloon b3"></div>
+  <div class="balloon b4"></div>
+  <div class="balloon b5"></div>
+  <div class="balloon b6"></div>
+
+  <script>
+    // Confetti
+    function createConfettiBurst(count = 70) {
+      const colors = ['#ff6b9d', '#ffd93d', '#6bcf7f', '#4facfe', '#f093fb', '#43e97b'];
+
+      for (let i = 0; i < count; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = (Math.random() * 0.6) + 's';
+        confetti.style.animationDuration = (Math.random() * 1.5 + 2.5) + 's';
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 4000);
+      }
+    }
+
+    // Sparkles on cake
+    function createSparkles() {
+      const cake = document.getElementById('cake');
+      const rect = cake.getBoundingClientRect();
+      const offsetX = rect.width;
+      const offsetY = rect.height;
+
+      for (let i = 0; i < 22; i++) {
+        setTimeout(() => {
+          const sparkle = document.createElement('div');
+          sparkle.className = 'sparkle';
+          sparkle.style.left = (Math.random() * offsetX) + 'px';
+          sparkle.style.top = (Math.random() * offsetY) + 'px';
+          sparkle.style.animationDelay = Math.random() + 's';
+          cake.appendChild(sparkle);
+
+          setTimeout(() => sparkle.remove(), 2500);
+        }, i * 70);
+      }
+    }
+
+    // Elements
+    const cutBtn = document.getElementById('cutBtn');
+    const cake = document.getElementById('cake');
+    const celebrationText = document.getElementById('celebrationText');
+    const sparkleBtn = document.getElementById('sparkleBtn');
+
+    // Initial gentle confetti
+    createConfettiBurst(40);
+
+    cutBtn.addEventListener('click', () => {
+      // Cutting animation
+      cake.classList.add('cutting');
+
+      // Confetti burst
+      createConfettiBurst(110);
+
+      // Sparkles
+      createSparkles();
+
+      // Celebration message
+      celebrationText.textContent = '🎊 Slice secured. You officially cut a cake today. 🎊';
+      celebrationText.classList.add('show');
+
+      // Hide button briefly (so it feels like a moment)
+      cutBtn.disabled = true;
+      cutBtn.style.opacity = '0.7';
+
+      setTimeout(() => {
+        cake.classList.remove('cutting');
+        celebrationText.classList.remove('show');
+        celebrationText.textContent = '';
+        cutBtn.disabled = false;
+        cutBtn.style.opacity = '1';
+      }, 3000);
+    });
+
+    sparkleBtn.addEventListener('click', () => {
+      createSparkles();
+      createConfettiBurst(35);
+    });
+  </script>
+</body>
+</html>
