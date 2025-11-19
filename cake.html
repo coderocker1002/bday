@@ -17,12 +17,14 @@
       background-size: 350% 350%;
       animation: bgMove 18s ease-in-out infinite;
       min-height: 100vh;
-      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
       color: #ffffff;
+      /* allow scroll vertically */
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     @keyframes bgMove {
@@ -42,6 +44,7 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
       text-align: center;
       z-index: 2;
+      margin: 2rem 0;
     }
 
     .badge {
@@ -166,7 +169,6 @@
       75% { transform: rotate(0.6deg); }
     }
 
-    /* Bottom layer – dark chocolate */
     .layer1 {
       height: 88px;
       bottom: 4px;
@@ -175,7 +177,6 @@
       border-bottom-right-radius: 26px;
     }
 
-    /* Middle layer – milk chocolate */
     .layer2 {
       height: 70px;
       bottom: 80px;
@@ -184,7 +185,6 @@
       background: linear-gradient(180deg, #6b442b 0%, #5a3622 60%, #4a2919 100%);
     }
 
-    /* Top layer – chocolate with ganache drip */
     .layer3 {
       height: 62px;
       bottom: 138px;
@@ -196,7 +196,6 @@
       overflow: visible;
     }
 
-    /* Ganache drip */
     .ganache {
       position: absolute;
       top: 0;
@@ -224,7 +223,6 @@
     .drip.d4 { left: 120px; height: 24px; }
     .drip.d5 { left: 152px; height: 30px; }
 
-    /* Cream/frosting dots – now white/chocolate swirls on top */
     .frosting {
       position: absolute;
       width: 22px;
@@ -246,7 +244,6 @@
     .f4 { top: 64px; left: 22px; animation-delay: 0.2s; }
     .f5 { top: 64px; right: 24px; animation-delay: 0.6s; }
 
-    /* Choco chips/sprinkles on top */
     .chip {
       position: absolute;
       width: 6px;
@@ -400,7 +397,7 @@
     .cake.cutting .layer2 { --split-x: 120px; --split-rotate: 18deg; }
     .cake.cutting .layer3 { --split-x: -90px;  --split-rotate: -22deg; }
 
-    /* Balloons (background, softened) */
+    /* Balloons */
     .balloon {
       position: absolute;
       width: 60px;
@@ -446,7 +443,6 @@
     .b5 { background: #f093fb; top: 45%; right: 4%;  animation-delay: 1.2s; }
     .b6 { background: #43e97b; top: 70%; right: 13%; animation-delay: 2s; }
 
-    /* Confetti */
     .confetti {
       position: fixed;
       width: 10px;
@@ -468,7 +464,6 @@
       }
     }
 
-    /* Sparkles on the cake */
     .sparkle {
       position: absolute;
       width: 4px;
@@ -484,7 +479,6 @@
       50% { opacity: 1; transform: scale(1); }
     }
 
-    /* Back link */
     .back-link {
       position: fixed;
       left: 1.5rem;
@@ -512,10 +506,17 @@
       background: rgba(255, 255, 255, 0.36);
     }
 
-    /* ----- Mobile tweaks ----- */
+    /* Mobile tweaks */
     @media (max-width: 480px) {
+      body {
+        align-items: flex-start;
+        padding-top: 1.6rem;
+        padding-bottom: 1.8rem;
+      }
+
       .card {
         padding: 2rem 1.6rem 1.8rem;
+        margin: 0 auto;
       }
 
       h1 {
@@ -574,7 +575,6 @@
   </style>
 </head>
 <body>
-  <!-- optional back to main card -->
   <a href="index.html" class="back-link">
     <span class="icon">←</span>
     Back to birthday card
@@ -653,7 +653,6 @@
     </div>
   </div>
 
-  <!-- Balloons -->
   <div class="balloon b1"></div>
   <div class="balloon b2"></div>
   <div class="balloon b3"></div>
@@ -662,7 +661,6 @@
   <div class="balloon b6"></div>
 
   <script>
-    // Confetti
     function createConfettiBurst(count = 70) {
       const colors = ['#ff6b9d', '#ffd93d', '#6bcf7f', '#4facfe', '#f093fb', '#43e97b'];
 
@@ -679,7 +677,6 @@
       }
     }
 
-    // Sparkles on cake
     function createSparkles() {
       const cake = document.getElementById('cake');
       const rect = cake.getBoundingClientRect();
@@ -700,30 +697,21 @@
       }
     }
 
-    // Elements
     const cutBtn = document.getElementById('cutBtn');
     const cake = document.getElementById('cake');
     const celebrationText = document.getElementById('celebrationText');
     const sparkleBtn = document.getElementById('sparkleBtn');
 
-    // Initial gentle confetti
     createConfettiBurst(40);
 
     cutBtn.addEventListener('click', () => {
-      // Cutting animation
       cake.classList.add('cutting');
-
-      // Confetti burst
       createConfettiBurst(110);
-
-      // Sparkles
       createSparkles();
 
-      // Celebration message
       celebrationText.textContent = '🎊 Slice secured. You officially cut a cake today. 🎊';
       celebrationText.classList.add('show');
 
-      // Hide button briefly (so it feels like a moment)
       cutBtn.disabled = true;
       cutBtn.style.opacity = '0.7';
 
