@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cottage Garden Cat Catch 🐱🌼</title>
+
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(180deg, #ffe9d6, #f9dccc, #e7f6d5);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Nunito", sans-serif;
+    overflow: hidden;
+  }
+
+  .game {
+    width: min(90vw, 520px);
+    height: min(140vw, 720px);
+    background: #fff7f0;
+    border-radius: 40px;
+    border: 2px solid #ffffffaa;
+    box-shadow: 0 25px 55px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #score {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.3vh;
+    font-weight: 800;
+    color: #5d4b39;
+    z-index: 10;
+  }
+
+  #msg {
+    position: absolute;
+    bottom: 18px;
+    width: 100%;
+    text-align: center;
+    font-size: 2.3vh;
+    font-weight: bold;
+    color: #5d4b39;
+    opacity: 0;
+    transition: 0.4s;
+  }
+
+  .scene {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* GRASS */
+  .grass {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 19%;
+    background: #cbe9b9;
+    border-top: 3px solid #b4d89d;
+    box-shadow: inset 0 -6px #a4cc8f;
+  }
+
+  /* COTTAGE — NOW RESPONSIVE + CENTERED */
+  .cottage {
+    position: absolute;
+    width: 70%;
+    aspect-ratio: 1.35;
+    top: 22%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffe5c8;
+    border: 3px solid #e2c3a5;
+    border-radius: 15px;
+    box-shadow: 0 6px #d1ac87;
+  }
+
+  .roof {
+    position: absolute;
+    width: 110%;
+    height: 22%;
+    left: -5%;
+    top: -20%;
+    background: #cd8772;
+    border-radius: 15px 15px 0 0;
+    box-shadow: inset 0 -8px #b66f5f;
+  }
+
+  .window {
+    position: absolute;
+    width: 22%;
+    aspect-ratio: 1;
+    background: #fffdf5;
+    border: 3px solid #c7a782;
+    border-radius: 12px;
+  }
+
+  .window.left { top: 30%; left: 12%; }
+  .window.right { top: 30%; right: 12%; }
+
+  /* DOOR */
+  .door {
+    position: absolute;
+    width: 28%;
+    height: 40%;
+    left: 50%;
+    bottom: 4%;
+    transform: translateX(-50%);
+    background: #caa382;
+    border-radius: 10px;
+    box-shadow: inset 0 -6px #b38a68;
+  }
+
+  /* BUSHES */
+  .bush {
+    position: absolute;
+    width: 28%;
+    height: 12%;
+    background: #9bcf86;
+    border-radius: 60px;
+    bottom: 19%;
+    box-shadow: inset 0 -8px #6f9f5d;
+  }
+
+  .bush.left { left: 5%; }
+  .bush.right { right: 5%; }
+  .bush.center {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    bottom: 22%;
+  }
+  .btn.secondary {
+      background: rgba(255, 255, 255, 0.85);
+      color: #ff7edb;
+    }
+
+    .btn span.icon {
+      font-size: 1.15rem;
+    }
+
+  /* Characters */
+  .character {
+    position: absolute;
+    font-size: 7vh;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.2s;
+    cursor: pointer;
+  }
+
+  .character:active {
+    transform: scale(0.8);
+  }
+
+  /* Sparkles */
+  .sparkle {
+    position: absolute;
+    font-size: 3vh;
+    opacity: 0;
+    animation: pop 0.6s forwards;
+  }
+  @keyframes pop {
+    0% { transform: scale(0.4); opacity: 1; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+  .back-link {
+      position: fixed;
+      left: 1.5rem;
+      top: 1.3rem;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(106, 190, 144, 0.26);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      cursor: pointer;
+      text-decoration: none;
+      color: #ffffff;
+      z-index: 6;
+    }
+
+</style>
+</head>
+
+<body>
+    
+<div class="game">
+    <a href="index.html" class="back-link">
+    <span class="back-link">←</span>
+    Back to birthday card
+  </a>
+  <div id="score">Score: <span id="num">0  (catch the cats not the worms)</span></div>
+  <div id="msg"></div>
+
+  <div class="scene">
+    <div class="cottage">
+      <div class="roof"></div>
+      <div class="window left"></div>
+      <div class="window right"></div>
+      <div class="door"></div>
+    </div>
+
+    <div class="bush left"></div>
+    <div class="bush right"></div>
+    <div class="bush center"></div>
+    <div class="grass"></div>
+  </div>
+</div>
+
+<script>
+const game = document.querySelector(".game");
+const msg = document.getElementById("msg");
+const num = document.getElementById("num");
+let score = 0;
+
+/* Cats */
+const cats = ["🐱", "🐈", "😺", "🌼🐱", "🐾🐱"];
+const worm = "🐛";
+
+/* Show messages */
+function showMessage(text, positive = true) {
+  msg.style.opacity = 1;
+  msg.textContent = text;
+  msg.style.color = positive ? "#5d4b39" : "#a13b3b";
+  setTimeout(() => msg.style.opacity = 0, 1100);
+}
+
+/* Calculate responsive character positions */
+function getSpots() {
+  const w = game.offsetWidth;
+  const h = game.offsetHeight;
+
+  return [
+    {x: w * 0.30, y: h * 0.33},   // left window
+    {x: w * 0.60, y: h * 0.33},   // right window
+    {x: w * 0.13, y: h * 0.63},   // left bush
+    {x: w * 0.78, y: h * 0.63},   // right bush
+    {x: w * 0.50, y: h * 0.59},   // center bush
+    {x: w * 0.50, y: h * 0.47},   // door area
+  ];
+}
+
+/* Spawn characters */
+function spawnCharacter() {
+  const el = document.createElement("div");
+  el.classList.add("character");
+
+  const isWorm = Math.random() < 0.25;
+  el.textContent = isWorm ? worm : cats[Math.floor(Math.random() * cats.length)];
+
+  const spotList = getSpots();
+  const s = spotList[Math.floor(Math.random() * spotList.length)];
+
+  el.style.left = s.x + "px";
+  el.style.top = s.y + "px";
+
+  game.appendChild(el);
+
+  setTimeout(() => el.style.opacity = 1, 60);
+
+  const timeout = setTimeout(() => {
+    el.style.opacity = 0;
+    setTimeout(() => el.remove(), 300);
+  }, 1500);
+
+  el.onclick = () => {
+    clearTimeout(timeout);
+    catchCharacter(el, isWorm);
+  };
+}
+
+function catchCharacter(el, isWorm) {
+  const sp = document.createElement("div");
+  sp.classList.add("sparkle");
+  sp.textContent = isWorm ? "💢" : "✨";
+
+  sp.style.left = el.style.left;
+  sp.style.top = el.style.top;
+
+  game.appendChild(sp);
+  setTimeout(() => sp.remove(), 600);
+
+  if (isWorm) {
+    score -= 1;
+    showMessage("Eww a worm! -1 🐛", false);
+  } else {
+    score += 1;
+    showMessage("You found a kitty! 🐱🌼", true);
+  }
+
+  num.textContent = score;
+  el.remove();
+}
+
+setInterval(spawnCharacter, 1400);
+
+/* Recalculate positions on resize */
+window.addEventListener("resize", () => {});
+</script>
+</body>
+</html>
