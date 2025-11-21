@@ -27,9 +27,20 @@
     overflow: hidden;
   }
 
+  #instructions {
+    position: absolute;
+    top: 8px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.9vh;
+    color: #6d583d;
+    opacity: 0.9;
+    z-index: 10;
+  }
+
   #score {
     position: absolute;
-    top: 16px;
+    top: 32px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 2.3vh;
@@ -56,7 +67,6 @@
     height: 100%;
   }
 
-  /* GRASS */
   .grass {
     position: absolute;
     bottom: 0;
@@ -67,7 +77,6 @@
     box-shadow: inset 0 -6px #a4cc8f;
   }
 
-  /* COTTAGE — NOW RESPONSIVE + CENTERED */
   .cottage {
     position: absolute;
     width: 70%;
@@ -104,7 +113,6 @@
   .window.left { top: 30%; left: 12%; }
   .window.right { top: 30%; right: 12%; }
 
-  /* DOOR */
   .door {
     position: absolute;
     width: 28%;
@@ -117,7 +125,6 @@
     box-shadow: inset 0 -6px #b38a68;
   }
 
-  /* BUSHES */
   .bush {
     position: absolute;
     width: 28%;
@@ -127,7 +134,6 @@
     bottom: 19%;
     box-shadow: inset 0 -8px #6f9f5d;
   }
-
   .bush.left { left: 5%; }
   .bush.right { right: 5%; }
   .bush.center {
@@ -136,16 +142,7 @@
     width: 30%;
     bottom: 22%;
   }
-  .btn.secondary {
-      background: rgba(255, 255, 255, 0.85);
-      color: #ff7edb;
-    }
 
-    .btn span.icon {
-      font-size: 1.15rem;
-    }
-
-  /* Characters */
   .character {
     position: absolute;
     font-size: 7vh;
@@ -158,104 +155,152 @@
     transform: scale(0.8);
   }
 
-  /* Sparkles */
   .sparkle {
     position: absolute;
     font-size: 3vh;
     opacity: 0;
     animation: pop 0.6s forwards;
   }
+
   @keyframes pop {
     0% { transform: scale(0.4); opacity: 1; }
     100% { transform: scale(1.4); opacity: 0; }
   }
-  .back-link {
-      position: fixed;
-      left: 1.5rem;
-      top: 1.3rem;
-      font-size: 0.92rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.45rem 0.9rem;
-      border-radius: 999px;
-      background: rgba(106, 190, 144, 0.26);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.55);
-      cursor: pointer;
-      text-decoration: none;
-      color: #ffffff;
-      z-index: 6;
-    }
 
+  .congrats-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fffaf4;
+    padding: 25px;
+    border-radius: 18px;
+    border: 2px solid #f0e2d2;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    width: 75%;
+    text-align: center;
+    display: none;
+    z-index: 20;
+  }
+
+  .congrats-card h2 {
+    font-size: 2.6vh;
+    color: #6b4f3a;
+    margin-bottom: 10px;
+  }
+
+  .congrats-card p {
+    font-size: 2vh;
+    color: #7d644a;
+  }
+
+  .play-again {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #ffd7ef;
+    border: none;
+    border-radius: 12px;
+    font-size: 2vh;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.13);
+  }
+
+  .back-link {
+    position: fixed;
+    left: 1.5rem;
+    top: 1.3rem;
+    font-size: 0.92rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(106, 190, 144, 0.26);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    cursor: pointer;
+    text-decoration: none;
+    color: #ffffff;
+    z-index: 6;
+  }
 </style>
 </head>
 
 <body>
-    
-<div class="game">
-    <a href="index.html" class="back-link">
-    <span class="back-link">←</span>
-    Back to birthday card
-  </a>
-  <div id="score">Score: <span id="num">0  (catch the cats not the worms)</span></div>
-  <div id="msg"></div>
 
-  <div class="scene">
-    <div class="cottage">
-      <div class="roof"></div>
-      <div class="window left"></div>
-      <div class="window right"></div>
-      <div class="door"></div>
+  <div class="game">
+
+    <a href="index.html" class="back-link">← Back to birthday card</a>
+
+    <div id="instructions">Click the cats 🐱 but not the worms 🐛!</div>
+
+    <div id="score">Score: <span id="num">0</span></div>
+    <div id="msg"></div>
+
+    <div class="scene">
+      <div class="cottage">
+        <div class="roof"></div>
+        <div class="window left"></div>
+        <div class="window right"></div>
+        <div class="door"></div>
+      </div>
+
+      <div class="bush left"></div>
+      <div class="bush right"></div>
+      <div class="bush center"></div>
+      <div class="grass"></div>
     </div>
 
-    <div class="bush left"></div>
-    <div class="bush right"></div>
-    <div class="bush center"></div>
-    <div class="grass"></div>
+    <div class="congrats-card" id="congrats">
+      <h2>🎉 You caught all the kitties! 🎉</h2>
+      <p>Now it's time to feed them 🍲🐱</p>
+      <button class="play-again" onclick="resetGame()">Play Again</button>
+    </div>
+
   </div>
-</div>
 
 <script>
+let score = 0;
+let gameActive = true;
+
 const game = document.querySelector(".game");
 const msg = document.getElementById("msg");
 const num = document.getElementById("num");
-let score = 0;
+const congrats = document.getElementById("congrats");
 
-/* Cats */
 const cats = ["🐱", "🐈", "😺", "🌼🐱", "🐾🐱"];
 const worm = "🐛";
 
-/* Show messages */
 function showMessage(text, positive = true) {
   msg.style.opacity = 1;
   msg.textContent = text;
   msg.style.color = positive ? "#5d4b39" : "#a13b3b";
-  setTimeout(() => msg.style.opacity = 0, 1100);
+  setTimeout(() => (msg.style.opacity = 0), 1100);
 }
 
-/* Calculate responsive character positions */
 function getSpots() {
   const w = game.offsetWidth;
   const h = game.offsetHeight;
 
   return [
-    {x: w * 0.30, y: h * 0.33},   // left window
-    {x: w * 0.60, y: h * 0.33},   // right window
-    {x: w * 0.13, y: h * 0.63},   // left bush
-    {x: w * 0.78, y: h * 0.63},   // right bush
-    {x: w * 0.50, y: h * 0.59},   // center bush
-    {x: w * 0.50, y: h * 0.47},   // door area
+    { x: w * 0.30, y: h * 0.33 },
+    { x: w * 0.60, y: h * 0.33 },
+    { x: w * 0.13, y: h * 0.63 },
+    { x: w * 0.78, y: h * 0.63 },
+    { x: w * 0.50, y: h * 0.59 },
+    { x: w * 0.50, y: h * 0.47 }
   ];
 }
 
-/* Spawn characters */
 function spawnCharacter() {
+  if (!gameActive) return;
+
   const el = document.createElement("div");
   el.classList.add("character");
 
   const isWorm = Math.random() < 0.25;
-  el.textContent = isWorm ? worm : cats[Math.floor(Math.random() * cats.length)];
+  el.textContent =
+    isWorm ? worm : cats[Math.floor(Math.random() * cats.length)];
 
   const spotList = getSpots();
   const s = spotList[Math.floor(Math.random() * spotList.length)];
@@ -265,7 +310,7 @@ function spawnCharacter() {
 
   game.appendChild(el);
 
-  setTimeout(() => el.style.opacity = 1, 60);
+  setTimeout(() => (el.style.opacity = 1), 60);
 
   const timeout = setTimeout(() => {
     el.style.opacity = 0;
@@ -299,12 +344,22 @@ function catchCharacter(el, isWorm) {
 
   num.textContent = score;
   el.remove();
+
+  if (score >= 10) {
+    gameActive = false;
+    congrats.style.display = "block";
+  }
 }
 
 setInterval(spawnCharacter, 1400);
 
-/* Recalculate positions on resize */
-window.addEventListener("resize", () => {});
+function resetGame() {
+  score = 0;
+  num.textContent = score;
+  gameActive = true;
+  congrats.style.display = "none";
+}
 </script>
+
 </body>
 </html>
